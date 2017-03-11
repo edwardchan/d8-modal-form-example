@@ -6,11 +6,10 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
-use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 
 /**
- * SendToDestinationsForm class.
+ * ModalForm class.
  */
 class ModalForm extends FormBase {
 
@@ -34,11 +33,10 @@ class ModalForm extends FormBase {
       '#weight' => -10,
     ];
 
-    // A required checkboxes field.
-    $form['select'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Select Destination(s)'),
-      '#options' => ['random_value' => 'Some random value'],
+    // A required checkbox field.
+    $form['our_checkbox'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('I Agree: modal forms are awesome!'),
       '#required' => TRUE,
     ];
 
@@ -68,12 +66,12 @@ class ModalForm extends FormBase {
   public function submitModalFormAjax(array $form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
 
-    // If there are any form errors, AJAX replace the form.
+    // If there are any form errors, re-display the form.
     if ($form_state->hasAnyErrors()) {
       $response->addCommand(new ReplaceCommand('#modal_example_form', $form));
     }
     else {
-      $response->addCommand(new OpenModalDialogCommand("Success!", 'The modal form has been submitted.', ['width' => 700]));
+      $response->addCommand(new OpenModalDialogCommand("Success!", 'The modal form has been submitted.', ['width' => 800]));
     }
 
     return $response;
